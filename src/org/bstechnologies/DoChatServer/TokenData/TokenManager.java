@@ -24,7 +24,7 @@ public class TokenManager {
 
 
     }
-    public int emptySpace()
+    private int emptySpace()
     {
         int out=0;
         for(int i=0;i<tokens.length;i++)

@@ -3,6 +3,7 @@ package org.bstechnologies.DoChatServer;
 import org.bstechnologies.DoChatServer.Handler.Handler;
 import org.bstechnologies.DoChatServer.TokenData.Token;
 import org.bstechnologies.DoChatServer.TokenData.TokenManager;
+import org.bstechnologies.DoChatServer.UserData.UserManager;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -13,6 +14,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws Exception {
+        UserManager userManager = new UserManager();
         System.out.println("[Server] Starting Server");
         System.out.println("[Server] Loading Properties");
         HashMap<String,String> map = getProperties();
