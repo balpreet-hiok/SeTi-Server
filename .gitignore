@@ -1,0 +1,5 @@
+*.iml
+*.properties
+out
+.idea
+data
