@@ -18,7 +18,6 @@ public class TokenManager {
     {
         Token token$ = new Token(token,type);
         int i = emptySpace();
-        System.out.println(i+" empty");
         tokens = Arrays.copyOf(tokens,tokens.length+1);
         tokens[i] = token$;
 
@@ -71,12 +70,5 @@ public class TokenManager {
             temp[i]=tokens[i];
         }
         tokens=temp;
-    }
-    public void printTokens(){
-        for(int i=0;i< tokens.length;i++)
-        {
-            if(tokens[i]==null) {System.out.println("null");continue;}
-            System.out.println(tokens[i].getToken());
-        }
     }
 }

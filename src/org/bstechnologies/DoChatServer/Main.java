@@ -1,19 +1,39 @@
 package org.bstechnologies.DoChatServer;
 
 import org.bstechnologies.DoChatServer.Handler.Handler;
-import org.bstechnologies.DoChatServer.TokenData.Token;
 import org.bstechnologies.DoChatServer.TokenData.TokenManager;
 import org.bstechnologies.DoChatServer.UserData.UserManager;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class Main {
+    static boolean running = true;
     public static void main(String[] args) throws Exception {
+
+        Runnable reader = new Runnable() {
+            @Override
+            public void run() {
+                Scanner scan = new Scanner(System.in);
+                while(true)
+                {
+                    String line = scan.nextLine();
+                    if(line.equals("stop"))
+                    {
+
+                        System.exit(0);
+                        running=false;
+                        break;
+                    }
+                }
+            }
+        };
+        Thread thread = new Thread(reader);
+        thread.start();
         UserManager userManager = new UserManager();
         System.out.println("[Server] Starting Server");
         System.out.println("[Server] Loading Properties");
@@ -30,11 +50,12 @@ public class Main {
             Runnable run = new Runnable() {
                 @Override
                 public void run() {
-                    Handler handler = new Handler(socket,tokenManager);
+                    Handler handler = new Handler(socket,tokenManager,userManager);
                 }
             };
             Thread th = new Thread(run);
             th.start();
+            if(!running)System.exit(0);
         }
     }
     public static HashMap<String,String> getProperties() throws Exception {
@@ -91,4 +112,5 @@ public class Main {
         if(!file.exists()){file.mkdirs();}
         if(file.isFile()){file.delete();file.mkdirs();}
     }
+
 }

@@ -2,6 +2,8 @@ package org.bstechnologies.DoChatServer.Core;
 
 import org.bstechnologies.DoChatServer.TokenData.TokenGen;
 import org.bstechnologies.DoChatServer.TokenData.TokenManager;
+import org.bstechnologies.DoChatServer.UserData.User;
+import org.bstechnologies.DoChatServer.UserData.UserManager;
 import org.bstechnologies.NetRequestManager.NetRequestManager;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -9,10 +11,12 @@ import org.json.simple.parser.JSONParser;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.HashMap;
 
 public class Core {
     private TokenManager tokenManager;
-    public Core(TokenManager TokenManager){this.tokenManager=TokenManager;}
+    private UserManager userManager;
+    public Core(TokenManager TokenManager, UserManager userManager){this.tokenManager=TokenManager;this.userManager=userManager;}
     public String parse(String msg) throws Exception {
         NetRequestManager nrm = new NetRequestManager();
         nrm.parse(msg);
@@ -23,22 +27,16 @@ public class Core {
             if(name==null){return "request?status=false&reason=invalid_information";}
             String passwd = nrm.get("passwd");
             if(passwd==null){return "request?status=false&reason=invalid_information";}
-            String id = "";
-            while (true)
-            {
-                TokenGen token = new TokenGen();
-                id = token.genToken(4,false);
-                File file = new File("data/users/"+id);
-                if(!file.exists())break;
-            }
-            String authToken = new TokenGen().genToken(50);
-            JSONObject json = new JSONObject();
-            json.put("name",name);
-            json.put("passwd",passwd);
-            json.put("authToken",authToken);
-            FileWriter fw = new FileWriter("data/users/"+id);
-            fw.write(json.toJSONString());
-            fw.close();
+            User user = new User();
+            HashMap<String,String> data = new HashMap<>();
+            data.put("passwd",passwd);
+            user.setName(name);
+            user.add(data);
+            String id = userManager.makeUser(user);
+            if(id==null){parse(msg);}
+            userManager.reloadUsers();
+            user = userManager.getUserData(id);
+            String authToken = user.get("authToken");
             return "request?status=true&id="+id+"&authToken="+authToken;
         }
         if(cmd.equals("login"))
@@ -47,10 +45,8 @@ public class Core {
             if(id==null){return "request?status=false&reason=insufficient_information";}
             String authToken = nrm.get("authToken");
             if(authToken==null){return "request?status=false&reason=insufficient_information";}
-            JSONObject json = loadData("data/users/"+id);
-            if(json==null){return "request?status=false&reason=no_id_found";}
-            String authTokenData = json.get("authToken").toString();
-
+            User user = userManager.getUserData(id);
+            String authTokenData = user.get("authToken");
             if(authToken.equals(authTokenData)){
                 String token = "";
                while (true)

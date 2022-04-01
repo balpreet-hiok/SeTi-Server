@@ -1,65 +1,161 @@
 package org.bstechnologies.DoChatServer.UserData;
 
+import org.bstechnologies.DoChatServer.TokenData.TokenGen;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.Arrays;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Set;
 
-public class UserManager {
-    public User [] users;
-    public User [] online;
+public class UserManager{
+    private User [] users;
+    private User [] online;
     public UserManager() throws Exception {
         File file = new File("data/users");
-        String [] ids = file.list();
+        String []ids = file.list();
         users = new User[ids.length];
-        User user = new User();
+        online = new User[ids.length];
         for(int i=0;i<users.length;i++)
         {
-            File usr = new File("data/users/"+ids[i]);
-            String id = usr.getName();
-            System.out.println(id+" blhaa");
-            JSONObject json = loadData("data/users/"+id);
-            String name = json.get("name").toString();
-            System.out.println(name+" haha");
+            User user = new User();
+            user.setId(ids[i]);
+            HashMap<String,String> data = loadData("data/users/"+user.getId());
+            String name = data.get("name");
             user.setName(name);
-            user.setId(id);
-            HashMap<String,String> data = new HashMap<>();
-            String [] keys = new String[json.keySet().size()];
-            json.keySet().toArray(keys);
-            for(int j=0;j< keys.length;j++)
+            String []keys = new String[data.keySet().size()];data.keySet().toArray(keys);
+            HashMap<String,String> usrData = new HashMap<>();
+            for(int j=0;j<keys.length;j++)
             {
-                if(keys[i].equals("name"))continue;
-                data.put(keys[i],json.get(keys[i]).toString());
-            }
-            int in = emptySpace();
-            this.users[in] = user;
-            System.out.println(users[i].getName()+" lmao");
+                if(keys[j].equals("name"))continue;
+                String value = data.get(keys[j]);
 
+                usrData.put(keys[j],value);
+            }
+            user.add(usrData);
+            users[i]=user;
         }
 
     }
-    public JSONObject loadData(String path) throws Exception {
-        JSONParser parser = new JSONParser();
-        Object obj = parser.parse(new FileReader(path));
-        JSONObject json = (JSONObject) obj;
-        return json;
+    public void isOnline(String id) throws Exception {
+        User user = new User();
+        HashMap<String,String> data = loadData("data/users/"+id);
+        String name = data.get("name");
+        user.setName(name);
+        user.setId(id);
+        String []keys = new String[data.keySet().size()];data.keySet().toArray(keys);
+        HashMap<String,String> usrData = new HashMap<>();
+        for(int i=0;i<keys.length;i++)
+        {
+            if(keys[i].equals("name"))continue;
+
+            usrData.put(keys[i],data.get(keys[i]));
+        }
+        user.add(usrData);
+        int in = getEmpty(online);
+        online[in]=user;
     }
-    private int emptySpace()
+    public void isOffline(String id)
     {
-        int out=0;
+        int removeIndex=0;
+        for(int i=0;i< online.length;i++)
+        {
+            String checkId = online[i].getId();
+            if(checkId.equals(id)) {
+                removeIndex=i;
+            }
+        }
+        if(removeIndex==0){return;}
+        User [] temp = new User[online.length-1];
+        for(int i=0;i< online.length;i++)
+        {
+            if(i==removeIndex)continue;
+            temp[i]=online[i];
+        }
+        online = temp;
+    }
+    public User getUserData(String id)
+    {
+        User out;
+        for(int i=0;i< users.length;i++)
+        {
+            if(users[i].getId().equals(id))return users[i];
+        }
+        return null;
+    }
+    public String makeUser(User user) throws IOException {
+        try{
+            String id = "";
+            while (true) {
+                TokenGen token = new TokenGen();
+                id = token.genToken(4, false);
+                File file = new File("data/users/" + id);
+                if (!file.exists()) break;
+            }
+            String authToken = new TokenGen().genToken(50);
+            JSONObject json = new JSONObject();
+            json.put("name", user.getName());
+            json.put("passwd", user.get("passwd"));
+            json.put("authToken", authToken);
+            FileWriter fw = new FileWriter("data/users/" + id);
+            fw.write(json.toJSONString());
+            fw.close();
+            return id;
+        }catch (Exception e)
+        {
+            return null;
+        }
+    }
+    private int getEmpty(User[] users) throws Exception {
+        for(int i=0;i< users.length;i++)
+        {
+            if(users[i]==null)return i;
+        }
+        throw new Exception("No Null Found");
+    }
+    private HashMap<String,String> loadData(String path) throws Exception
+    {
+        HashMap<String,String> output = new HashMap<>();
+        File file = new File(path);
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(new FileReader(file));
+        JSONObject json = (JSONObject) obj;
+        Set keySet = json.keySet();
+        String [] keys = new String[keySet.size()];
+        keySet.toArray(keys);
+        for(int i=0;i<keys.length;i++)
+        {
+            output.put(keys[i],json.get(keys[i]).toString());
+        }
+        return output;
+    }
+    public void reloadUsers() throws Exception {
+        File file = new File("data/users");
+        String []ids = file.list();
+        users = new User[ids.length];
         for(int i=0;i<users.length;i++)
         {
-            if(users[i]==null)
+            User user = new User();
+            user.setId(ids[i]);
+            HashMap<String,String> data = loadData("data/users/"+user.getId());
+            String name = data.get("name");
+            user.setName(name);
+            String []keys = new String[data.keySet().size()];data.keySet().toArray(keys);
+            HashMap<String,String> usrData = new HashMap<>();
+            for(int j=0;j<keys.length;j++)
             {
-                out = i;
-                break;
+                if(keys[j].equals("name"))continue;
+                String value = data.get(keys[j]);
+
+                usrData.put(keys[j],value);
             }
+            user.add(usrData);
+            users[i]=user;
         }
-        return out;
+
     }
 
 }
