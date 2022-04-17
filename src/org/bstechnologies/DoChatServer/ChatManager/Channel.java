@@ -7,10 +7,14 @@ import java.util.Arrays;
 
 public class Channel {
     private String name;
+    private String channelId;
     private String [] chatHistory = new String[1];
     public void setName(String newName){
         this.name=newName;
     }
+    public void setId(String id){this.channelId=id;}
+    public String getName(){return this.name;}
+    public String getId(){return this.channelId;}
     public void addMessage(String author,String message) throws Exception {
         String messageId;
         String data = "";
@@ -48,5 +52,5 @@ public class Channel {
             temp[i]=chatHistory[i];
         }
     }
-
+    public String [] getChat(){return chatHistory;}
 }
