@@ -1,6 +1,7 @@
 package org.bstechnologies.SeTiServer.Handler;
 
 import org.bstechnologies.SeTiServer.Core.Core;
+import org.bstechnologies.SeTiServer.Manager;
 import org.bstechnologies.SeTiServer.TokenData.TokenManager;
 import org.bstechnologies.SeTiServer.UserData.UserManager;
 import org.bstechnologies.NetRequestManager.NetRequestManager;
@@ -12,7 +13,7 @@ import java.util.Scanner;
 
 public class Handler {
     private String accToken="";
-    public Handler(Socket socket, TokenManager tokenManager, UserManager userManager){
+    public Handler(Socket socket, Manager manager){
         System.out.println("Handling "+socket+" with thread "+Thread.currentThread().getId());
         Runnable reader = new Runnable() {
             @Override
@@ -35,7 +36,7 @@ public class Handler {
                             pw.println(e);
                             break;
                         }
-                        Core core = new Core(tokenManager,userManager);
+                        Core core = new Core(manager);
                         String reply = core.parse(line);
                         nrm.parse(line);
                         if(nrm.getMain().equals("login"))

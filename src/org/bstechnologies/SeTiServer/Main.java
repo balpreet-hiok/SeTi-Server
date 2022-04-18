@@ -1,5 +1,6 @@
 package org.bstechnologies.SeTiServer;
 
+import org.bstechnologies.SeTiServer.ChatManager.ChannelManager;
 import org.bstechnologies.SeTiServer.Handler.Handler;
 import org.bstechnologies.SeTiServer.TokenData.TokenManager;
 import org.bstechnologies.SeTiServer.UserData.UserManager;
@@ -33,8 +34,11 @@ public class Main {
         };
         Thread thread = new Thread(reader);
         thread.start();
-        UserManager userManager = new UserManager();
         System.out.println("[Server] Starting Server");
+        ChannelManager channelManager = new ChannelManager();
+        TokenManager tokenManager = new TokenManager();
+        UserManager userManager = new UserManager();
+        Manager manager = new Manager(tokenManager,userManager,channelManager);
         System.out.println("[Server] Loading Properties");
         HashMap<String,String> map = getProperties();
         System.out.println("[Server] Starting Files Checkup");
@@ -42,14 +46,14 @@ public class Main {
         int port = Integer.parseInt(map.get("port"));
         ServerSocket server = new ServerSocket(port);
         System.out.println("[Server] Listening to port "+port);
-        TokenManager tokenManager = new TokenManager();
+
         while (true)
         {
             Socket socket = server.accept();
             Runnable run = new Runnable() {
                 @Override
                 public void run() {
-                    Handler handler = new Handler(socket,tokenManager,userManager);
+                    Handler handler = new Handler(socket,manager);
                 }
             };
             Thread th = new Thread(run);

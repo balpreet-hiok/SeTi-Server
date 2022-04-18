@@ -1,11 +1,7 @@
 package org.bstechnologies.SeTiServer.ChatManager;
 
-import org.bstechnologies.SeTiServer.TokenData.TokenGen;
-import org.bstechnologies.NetRequestManager.NetRequestManager;
-
 import java.util.Arrays;
 import java.util.HashMap;
-
 public class Channel {
     private String name;
     private String channelId;
@@ -16,16 +12,8 @@ public class Channel {
     public void setId(String id){this.channelId=id;}
     public String getName(){return this.name;}
     public String getId(){return this.channelId;}
-    public void addMessage(String author,String message) throws Exception {
-        String messageId;
+    public void addMessage(String author,String message, String msgId){
         HashMap<String, String> data = new HashMap<>();
-        String msgId = "";
-        while (true)
-        {
-             msgId = new TokenGen().genToken(10,false);
-            boolean check = checkId(msgId);
-            if(!check)break;
-        }
         data.put("message",message);
         data.put("author",author);
         data.put("messageId",msgId);
@@ -43,7 +31,7 @@ public class Channel {
         }
         return false;
     }
-    public void removeMessage(String id) throws Exception {
+    public void removeMessage(String id){
         HashMap<String,String> [] temp = new HashMap[chatHistory.length-1];
         for(int i=0;i<chatHistory.length;i++)
         {

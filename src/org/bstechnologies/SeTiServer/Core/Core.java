@@ -1,5 +1,7 @@
 package org.bstechnologies.SeTiServer.Core;
 
+import org.bstechnologies.SeTiServer.ChatManager.ChannelManager;
+import org.bstechnologies.SeTiServer.Manager;
 import org.bstechnologies.SeTiServer.TokenData.TokenGen;
 import org.bstechnologies.SeTiServer.TokenData.TokenManager;
 import org.bstechnologies.SeTiServer.UserData.User;
@@ -14,7 +16,8 @@ import java.util.HashMap;
 public class Core {
     private TokenManager tokenManager;
     private UserManager userManager;
-    public Core(TokenManager TokenManager, UserManager userManager){this.tokenManager=TokenManager;this.userManager=userManager;}
+    private ChannelManager channelManager;
+    public Core(Manager manager){this.channelManager=manager.channelManager;this.tokenManager=manager.tokenManager;this.userManager=manager.userManager;}
     public String parse(String msg) throws Exception {
         NetRequestManager nrm = new NetRequestManager();
         nrm.parse(msg);
