@@ -2,10 +2,7 @@ package org.bstechnologies.SeTiServer.Handler;
 
 import org.bstechnologies.SeTiServer.Core.Core;
 import org.bstechnologies.SeTiServer.Manager;
-import org.bstechnologies.SeTiServer.TokenData.TokenManager;
-import org.bstechnologies.SeTiServer.UserData.UserManager;
 import org.bstechnologies.NetRequestManager.NetRequestManager;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -67,7 +64,7 @@ public class Handler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        tokenManager.removeToken(accToken);
+        manager.tokenManager.removeToken(accToken);
     }
 
 }
