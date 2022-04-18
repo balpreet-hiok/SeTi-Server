@@ -1,8 +1,8 @@
-package org.bstechnologies.DoChatServer.Handler;
+package org.bstechnologies.SeTiServer.Handler;
 
-import org.bstechnologies.DoChatServer.Core.Core;
-import org.bstechnologies.DoChatServer.TokenData.TokenManager;
-import org.bstechnologies.DoChatServer.UserData.UserManager;
+import org.bstechnologies.SeTiServer.Core.Core;
+import org.bstechnologies.SeTiServer.TokenData.TokenManager;
+import org.bstechnologies.SeTiServer.UserData.UserManager;
 import org.bstechnologies.NetRequestManager.NetRequestManager;
 
 import java.io.IOException;

@@ -1,16 +1,14 @@
-package org.bstechnologies.DoChatServer.Core;
+package org.bstechnologies.SeTiServer.Core;
 
-import org.bstechnologies.DoChatServer.TokenData.TokenGen;
-import org.bstechnologies.DoChatServer.TokenData.TokenManager;
-import org.bstechnologies.DoChatServer.UserData.User;
-import org.bstechnologies.DoChatServer.UserData.UserManager;
+import org.bstechnologies.SeTiServer.TokenData.TokenGen;
+import org.bstechnologies.SeTiServer.TokenData.TokenManager;
+import org.bstechnologies.SeTiServer.UserData.User;
+import org.bstechnologies.SeTiServer.UserData.UserManager;
 import org.bstechnologies.NetRequestManager.NetRequestManager;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.HashMap;
 
 public class Core {

@@ -1,6 +1,6 @@
-package org.bstechnologies.DoChatServer.UserData;
+package org.bstechnologies.SeTiServer.UserData;
 
-import org.bstechnologies.DoChatServer.TokenData.TokenGen;
+import org.bstechnologies.SeTiServer.TokenData.TokenGen;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 

@@ -1,4 +1,4 @@
-package org.bstechnologies.DoChatServer.TokenData;
+package org.bstechnologies.SeTiServer.TokenData;
 
 import java.util.Arrays;
 import java.util.HashMap;

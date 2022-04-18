@@ -1,9 +1,8 @@
-package org.bstechnologies.DoChatServer.ChatManager;
+package org.bstechnologies.SeTiServer.ChatManager;
 
 import org.bstechnologies.NetRequestManager.NetRequestManager;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 

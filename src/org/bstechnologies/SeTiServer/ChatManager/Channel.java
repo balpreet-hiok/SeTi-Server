@@ -1,6 +1,6 @@
-package org.bstechnologies.DoChatServer.ChatManager;
+package org.bstechnologies.SeTiServer.ChatManager;
 
-import org.bstechnologies.DoChatServer.TokenData.TokenGen;
+import org.bstechnologies.SeTiServer.TokenData.TokenGen;
 import org.bstechnologies.NetRequestManager.NetRequestManager;
 
 import java.util.Arrays;

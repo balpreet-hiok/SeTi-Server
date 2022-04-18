@@ -1,14 +1,13 @@
-package org.bstechnologies.DoChatServer;
+package org.bstechnologies.SeTiServer;
 
-import org.bstechnologies.DoChatServer.Handler.Handler;
-import org.bstechnologies.DoChatServer.TokenData.TokenManager;
-import org.bstechnologies.DoChatServer.UserData.UserManager;
+import org.bstechnologies.SeTiServer.Handler.Handler;
+import org.bstechnologies.SeTiServer.TokenData.TokenManager;
+import org.bstechnologies.SeTiServer.UserData.UserManager;
 import java.io.File;
 import java.io.FileWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.Properties;
 import java.util.Scanner;
 
 public class Main {
@@ -60,13 +59,13 @@ public class Main {
     }
     public static HashMap<String,String> getProperties() throws Exception {
         System.out.println("[Properties] Starting Properties Checkup");
-        File path = new File("dochat_server.properties");
+        File path = new File("seti_server.properties");
 
         if(!path.exists()){
             path.createNewFile();
             FileWriter fw = new FileWriter(path);
-            fw.write("name=DoChat Server\n");
-            fw.write("description=A DoChat Server\n");
+            fw.write("name=SeTi Server\n");
+            fw.write("description=A SeTi Server\n");
             fw.write("port=1304\n");
             fw.close();
             System.out.println("[Properties] Made new Properties File");

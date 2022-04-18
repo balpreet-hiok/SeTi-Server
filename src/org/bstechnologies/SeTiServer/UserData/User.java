@@ -1,4 +1,4 @@
-package org.bstechnologies.DoChatServer.UserData;
+package org.bstechnologies.SeTiServer.UserData;
 
 import java.util.HashMap;
 import java.util.Set;
