@@ -90,14 +90,7 @@ public class Core {
                 return "request?status=false&reason=wrong_password";
             }
         }
-        if(cmd.equals("message")){
-            String channelId = nrm.get("channelId");
-            String tokenStr = nrm.get("token");
-            Token token = tokenManager.getToken(tokenStr);
-            String id = token.get("id");
-            User user = userManager.getUserData(id);
 
-        }
         return null;
     }
     private JSONObject loadData(String path){
