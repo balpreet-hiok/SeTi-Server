@@ -2,6 +2,8 @@ package org.bstechnologies.SeTiServer.Core;
 
 import org.bstechnologies.SeTiServer.ChatManager.ChannelManager;
 import org.bstechnologies.SeTiServer.Manager;
+import org.bstechnologies.SeTiServer.Permissions.PermissionManager;
+import org.bstechnologies.SeTiServer.TokenData.Token;
 import org.bstechnologies.SeTiServer.TokenData.TokenGen;
 import org.bstechnologies.SeTiServer.TokenData.TokenManager;
 import org.bstechnologies.SeTiServer.UserData.User;
@@ -16,8 +18,9 @@ import java.util.HashMap;
 public class Core {
     private TokenManager tokenManager;
     private UserManager userManager;
+    private PermissionManager permissionManager;
     private ChannelManager channelManager;
-    public Core(Manager manager){this.channelManager=manager.channelManager;this.tokenManager=manager.tokenManager;this.userManager=manager.userManager;}
+    public Core(Manager manager){this.channelManager=manager.channelManager;this.tokenManager=manager.tokenManager;this.userManager=manager.userManager;this.permissionManager=manager.permissionManager;}
     public String parse(String msg) throws Exception {
         NetRequestManager nrm = new NetRequestManager();
         nrm.parse(msg);
@@ -58,7 +61,9 @@ public class Core {
                    token = temp;
                    break;
                }
-               tokenManager.addToken(token,"account");
+               HashMap<String,String> data = new HashMap<>();
+               data.put("id",id);
+               tokenManager.addToken(token,"account",data);
                return "request?status=true&token="+token;
             }
             else{
@@ -84,6 +89,14 @@ public class Core {
             else{
                 return "request?status=false&reason=wrong_password";
             }
+        }
+        if(cmd.equals("message")){
+            String channelId = nrm.get("channelId");
+            String tokenStr = nrm.get("token");
+            Token token = tokenManager.getToken(tokenStr);
+            String id = token.get("id");
+            User user = userManager.getUserData(id);
+
         }
         return null;
     }

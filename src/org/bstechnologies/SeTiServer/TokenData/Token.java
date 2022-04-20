@@ -17,6 +17,9 @@ public class Token {
         this.type=type;
 
     }
+    public String get(String key){
+        return data.get(key);
+    }
     public void setToken(String tokenStr)
     {
         this.tokenStr=tokenStr;

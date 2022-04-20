@@ -61,6 +61,7 @@ public class ChannelManager {
     public void saveChannels() throws Exception {
         for(int i=0;i< channels.length;i++)
         {
+            if(channels[i] == null)continue;
             File file = new File("data/channels/"+channels[i].getId());
             if(!file.exists()){file.createNewFile();}
             if(file.isDirectory()){file.delete();file.createNewFile();}

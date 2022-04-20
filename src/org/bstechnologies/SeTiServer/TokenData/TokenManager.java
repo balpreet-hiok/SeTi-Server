@@ -50,6 +50,7 @@ public class TokenManager {
         }
         return out;
     }
+
     public void removeToken(String token)
     {
         int in = 0;
@@ -70,5 +71,11 @@ public class TokenManager {
             temp[i]=tokens[i];
         }
         tokens=temp;
+    }
+    public Token getToken(String tokenStr){
+        for(int i=0;i<tokens.length;i++){
+            if(tokens[i].getToken().equals(tokenStr)){return tokens[i];}
+        }
+        return null;
     }
 }

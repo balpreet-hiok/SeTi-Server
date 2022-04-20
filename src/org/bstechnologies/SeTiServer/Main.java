@@ -2,6 +2,7 @@ package org.bstechnologies.SeTiServer;
 
 import org.bstechnologies.SeTiServer.ChatManager.ChannelManager;
 import org.bstechnologies.SeTiServer.Handler.Handler;
+import org.bstechnologies.SeTiServer.Permissions.PermissionManager;
 import org.bstechnologies.SeTiServer.TokenData.TokenManager;
 import org.bstechnologies.SeTiServer.UserData.UserManager;
 import java.io.File;
@@ -38,7 +39,8 @@ public class Main {
         ChannelManager channelManager = new ChannelManager();
         TokenManager tokenManager = new TokenManager();
         UserManager userManager = new UserManager();
-        Manager manager = new Manager(tokenManager,userManager,channelManager);
+        PermissionManager permissionManager = new PermissionManager();
+        Manager manager = new Manager(tokenManager,userManager,channelManager,permissionManager);
         System.out.println("[Server] Loading Properties");
         HashMap<String,String> map = getProperties();
         System.out.println("[Server] Starting Files Checkup");
