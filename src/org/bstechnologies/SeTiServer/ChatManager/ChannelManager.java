@@ -63,8 +63,7 @@ public class ChannelManager {
         {
             if(channels[i] == null)continue;
             File file = new File("data/channels/"+channels[i].getId());
-            if(!file.exists()){file.createNewFile();}
-            if(file.isDirectory()){file.delete();file.createNewFile();}
+            if(!file.exists()){continue;}
             String channelName = channels[i].getName();
             String channelId = channels[i].getId();
             FileWriter fw = new FileWriter(file);

@@ -65,6 +65,7 @@ public class TokenManager {
             }
         }
         Token [] temp = new Token[tokens.length-1];
+        if(temp.length==0){temp=new Token[1];}
         for(int i=0;i< temp.length;i++)
         {
             if(i==in)continue;
@@ -73,6 +74,9 @@ public class TokenManager {
         tokens=temp;
     }
     public Token getToken(String tokenStr){
+        for(int i=0;i<tokens.length;i++){
+            System.out.println(tokens[i].getToken());
+        }
         for(int i=0;i<tokens.length;i++){
             if(tokens[i].getToken().equals(tokenStr)){return tokens[i];}
         }

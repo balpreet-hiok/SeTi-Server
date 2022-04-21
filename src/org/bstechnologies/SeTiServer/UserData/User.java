@@ -7,6 +7,7 @@ public class User {
     private String name;
     private String id;
     private HashMap<String, String> data = new HashMap<>();
+    private HashMap<String,String[]> roles = new HashMap<>();
     public User(){}
     public User(String name){this.name=name;}
     public User(String name,String id){this.name=name;this.id=id;}
@@ -33,6 +34,8 @@ public class User {
     {
         return this.data.get(key);
     }
+    public String [] getRoles(){return this.roles.get("roles");}
+    public void setRoles(String [] roles){this.roles.put("roles",roles);}
 
 
 }

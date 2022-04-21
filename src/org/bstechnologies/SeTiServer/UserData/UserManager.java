@@ -1,6 +1,7 @@
 package org.bstechnologies.SeTiServer.UserData;
 
 import org.bstechnologies.SeTiServer.TokenData.TokenGen;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -24,6 +25,7 @@ public class UserManager{
             User user = new User();
             user.setId(ids[i]);
             HashMap<String,String> data = loadData("data/users/"+user.getId());
+            HashMap<String,String[]>roles = loadRoles("data/users/"+user.getId());
             String name = data.get("name");
             user.setName(name);
             String []keys = new String[data.keySet().size()];data.keySet().toArray(keys);
@@ -36,6 +38,7 @@ public class UserManager{
                 usrData.put(keys[j],value);
             }
             user.add(usrData);
+            user.setRoles(roles.get("roles"));
             users[i]=user;
         }
 
@@ -131,6 +134,21 @@ public class UserManager{
         {
             output.put(keys[i],json.get(keys[i]).toString());
         }
+        return output;
+    }
+    private HashMap<String,String[]> loadRoles(String path) throws Exception
+    {
+        HashMap<String,String[]> output = new HashMap<>();
+        File file = new File(path);
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(new FileReader(file));
+        JSONObject json = (JSONObject) obj;
+        JSONArray array =(JSONArray) json.get("roles");
+        String [] roles = new String[array.size()];
+        for(int i=0;i<array.size();i++){
+            roles[i] = array.get(i).toString();
+        }
+        output.put("roles",roles);
         return output;
     }
     public void reloadUsers() throws Exception {
