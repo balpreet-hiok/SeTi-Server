@@ -98,6 +98,7 @@ public class Core {
                 String channelId = nrm.get("channelId");
                 String message = nrm.get("message");
                 Token token = tokenManager.getToken(tokenStr);
+                System.out.println(token.getToken());
                 String id = token.get("id");
                 User user = userManager.getUserData(id);
                 String []roles = user.getRoles();
@@ -106,8 +107,10 @@ public class Core {
                     String roleName = roles[i];
                     Permission permission = permissionManager.getPermission(roleName,channelId);
                     boolean access = permission.isHasWrite();
-                    if(access){hasAccess=true;break;}
+                    if(access){hasAccess=true;
+                        System.out.println("true true");break;}
                 }
+                System.out.println(hasAccess+" access");
                 if(hasAccess){
                     channelManager.addMessage(channelId,message,user.getId());
                     return "request?status=true";

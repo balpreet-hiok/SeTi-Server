@@ -12,7 +12,9 @@ public class TokenManager {
         token$.add(data);
         int i = emptySpace();
         tokens[i] = token$;
-
+        for(int j=0;j<tokens.length;j++){
+            System.out.println(tokens[j].getToken()+": "+tokens[i].get("id"));
+        }
     }
     public void addToken(String token, String type)
     {
@@ -80,6 +82,7 @@ public class TokenManager {
         for(int i=0;i<tokens.length;i++){
             if(tokens[i].getToken().equals(tokenStr)){return tokens[i];}
         }
+        System.out.println("error");
         return null;
     }
 }

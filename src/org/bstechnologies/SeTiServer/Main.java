@@ -37,9 +37,9 @@ public class Main {
         thread.start();
         System.out.println("[Server] Starting Server");
         ChannelManager channelManager = new ChannelManager();
-        PermissionManager permissionManager = new PermissionManager();
         TokenManager tokenManager = new TokenManager();
         UserManager userManager = new UserManager();
+        PermissionManager permissionManager = new PermissionManager();
         Manager manager = new Manager(tokenManager,userManager,channelManager,permissionManager);
         System.out.println("[Server] Loading Properties");
         HashMap<String,String> map = getProperties();
