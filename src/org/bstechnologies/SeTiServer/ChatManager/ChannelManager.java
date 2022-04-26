@@ -46,32 +46,45 @@ public class ChannelManager {
         }
     }
     public void addMessage(String channelId,String message, String author) throws Exception {
-        Channel channel;
-        for(int i=0;i<channels.length;i++)
-        {
-            if(channels[i] == null) continue;
-            System.out.println(i+"; i");
-            if(channels[i].getId().equals(channelId)){
-                System.out.println("hey wassup");
-                channel = channels[i];
-                TokenGen tokenGen = new TokenGen();
-                String msgId = tokenGen.genToken(10,false);
-                System.out.println(msgId);
-                channel.addMessage(author,message,msgId);
-                channels[i]=channel;
-                saveChannels();
-                break;
-            }
-        }
+       Channel channel;
+       for(int i=0;i<channels.length;i++){
+           if(channels[i]==null)continue;
+           if(channels[i].getId().equals(channelId)){
+               channel = channels[i];
+               TokenGen tokenGen = new TokenGen();
+               String messageId = tokenGen.genToken(10,false);
+               HashMap<String,String> []chat = channel.getChat();
+               for(int j=0;j<chat.length;j++){
+                   if(chat[j]==null)continue;
+                   if(chat[i].get("messageId").equals(messageId))addMessage(channelId,message,author);
+               }
+               channel.addMessage(author,message,messageId);
+               channels[i]=channel;
+               saveChannels();
+               break;
+           }
+       }
     }
     public void saveChannels() throws Exception {
        for(int i=0;i<channels.length;i++){
            if(channels[i]==null)continue;
-           HashMap<String,String> []chat = channels[i].getChat();
-           for(int j=0;j<chat.length;j++){
-               if(chat[j]==null)continue;
-               System.out.println(chat[j].get("message")+" message\n");
+           String channelName = channels[i].getName();
+           System.out.println("channelName: "+channelName);
+           String channelId = channels[i].getId();
+           System.out.println("channelId: "+channelId);
+           File file = new File("data/channels/"+channelId);
+           FileWriter fw = new FileWriter(file);
+           fw.write("properties?channelName="+channelName+"&channelId="+channelId+"\n");
+           HashMap<String,String> [] chatHistory = channels[i].getChat();
+           for(int j=0;j< chatHistory.length;j++){
+               if(chatHistory[j]==null)continue;
+            HashMap<String,String> messageData = chatHistory[j];
+            String messageStr = messageData.get("message");
+            String messageId = messageData.get("messageId");
+            String author = messageData.get("author");
+            fw.write("message?message="+messageStr+"&messageId="+messageId+"&author="+author+"\n");
            }
+           fw.close();
        }
     }
     public void newChannel(String name) throws Exception {
