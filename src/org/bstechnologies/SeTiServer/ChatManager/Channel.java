@@ -17,6 +17,7 @@ public class Channel {
         data.put("message",message);
         data.put("author",author);
         data.put("messageId",msgId);
+        System.out.println(data.get("message")+" "+data.get("author")+" "+data.get("messageId"));
         chatHistory[chatHistory.length-1]=data;
         chatHistory = Arrays.copyOf(chatHistory,chatHistory.length+1);
 
